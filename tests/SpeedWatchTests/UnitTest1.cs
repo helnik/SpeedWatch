@@ -72,5 +72,16 @@ namespace SpeedWatchTests
             Trace.WriteLine(test.GetSummary().ToString());
         }
 
+        [TestMethod]
+        public void QuickMeasure()
+        {
+            Action action = SampleActions.WaitTwoSeconds;
+            var elapsed = action.Measure();
+            Assert.IsTrue(elapsed.Seconds == 2);
+            action = () => SampleActions.ThrowOnEven(2);
+            elapsed = action.Measure();
+            Assert.IsTrue(elapsed.Milliseconds > 0);
+        }
+
     }
 }
