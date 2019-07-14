@@ -1,10 +1,7 @@
 ﻿using SpeedWatch;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TestConsole
 {
@@ -17,8 +14,21 @@ namespace TestConsole
             Console.WriteLine("====DESERIALIZER TESTS====");
             RunDeSerializerTests();
             Console.ReadKey();
+
+            Console.WriteLine("====COLLECTION TESTS ADD VALUE TYPES ====");
+            RunCollectionAddTests(Enumerable.Range(1, 100000).ToList());
+            Console.WriteLine("====COLLECTION TESTS ADD REFERENCE TYPES ====");
+            RunCollectionAddTests(Enumerable.Range(1, 1000).Select(o => new TestObject{ TestObjects = new List<TestObject>()}).ToList());
+
+            Console.WriteLine("====COLLECTION TESTS REMOVE VALUE TYPES ====");
+            RunCollectionRemoveTests(Enumerable.Range(1, 100000).ToList());
+            Console.WriteLine("====COLLECTION TESTS REMOVE REFERENCE TYPES ====");
+            RunCollectionRemoveTests(Enumerable.Range(1, 1000).Select(o => new TestObject { TestObjects = new List<TestObject>() }).ToList());
+
+            Console.ReadKey();
         }
 
+        #region JSON TESTS
         private static void RunSerializerTests()
         {
             var dataContractSerializerTest = new SpeedWatchTest("DataContractSerializer",
@@ -52,5 +62,59 @@ namespace TestConsole
 {javaScriptDeSerializerTest.GetSummary()} 
 {newtonSoftDeSerializerTest.GetSummary()}");
         }
+        #endregion
+
+        #region Collections
+        private static void RunCollectionAddTests<T>(List<T> inputList)
+        {
+            var listTest = new SpeedWatchTest("ListTest - Add",
+                () => 
+                    RunCollectionAction(inputList, 10, () => new List<T>(), (list, i) => list.Add(i)),
+                10, $"Add {inputList.Count} {typeof(T).Name} types to a list");
+            var dictionaryTest = new SpeedWatchTest("DictionaryTest - Add",
+                () => 
+                    RunCollectionAction(inputList, 10, () => new Dictionary<T, T>(), (dic, i) => dic.Add(i, i)),
+                10, $"Add {inputList.Count} {typeof(T).Name} types to a dictionary");
+            var hashSetTest = new SpeedWatchTest("HashSetTest - Add",
+                () => 
+                    RunCollectionAction(inputList, 10, () => new HashSet<T>(), (hash, i) => hash.Add(i)),
+                10, $"Add {inputList.Count} {typeof(T).Name} types to a hashset");
+
+            Console.WriteLine($@"Collections Add Tests:
+{listTest.GetSummary()} 
+{dictionaryTest.GetSummary()} 
+{hashSetTest.GetSummary()}");
+        }
+
+        private static void RunCollectionRemoveTests<T>(List<T> inputList)
+        {
+            var targetList = inputList.Take(inputList.Count / 2).ToList();
+
+            var listTest = new SpeedWatchTest("ListTest - Remove",
+                () => 
+                    RunCollectionAction(targetList, 10, () => new List<T>(inputList), (list, i) => list.Remove(i)),
+                10, $"Remove half {typeof(T).Name} types from a list");
+            var dictionaryTest = new SpeedWatchTest("DictionaryTest - Remove",
+                () => RunCollectionAction(targetList, 10, () => new Dictionary<T, T>(inputList.ToDictionary(i => i, i=> i)), (dic, i) => dic.Remove(i)),
+                10, $"Remove half {typeof(T).Name} types from a dictionary");
+            var hashSetTest = new SpeedWatchTest("HashSetTest - Remove",
+                () => RunCollectionAction(targetList, 10, () => new HashSet<T>(inputList), (hash, i) => hash.Remove(i)),
+                10, $"Remove half {typeof(T).Name} types from a hashset");
+
+            Console.WriteLine($@"Collections Remove Tests:
+{listTest.GetSummary()} 
+{dictionaryTest.GetSummary()} 
+{hashSetTest.GetSummary()}");
+        }
+        
+        internal static void RunCollectionAction<T, I>(List<I> input, int noOfRuns, Func<T> collectionInitializerFunc, Action<T, I> action)
+        {
+            for (var i = 0; i < noOfRuns; i++)
+            {
+                var collection = collectionInitializerFunc();
+                input.ForEach(inp => action(collection, inp));
+            }
+        }
+        #endregion
     }
 }
