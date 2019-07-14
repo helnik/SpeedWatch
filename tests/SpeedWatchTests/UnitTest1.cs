@@ -83,5 +83,13 @@ namespace SpeedWatchTests
             Assert.IsTrue(elapsed.Milliseconds > 0);
         }
 
+        [TestMethod]
+        public void QuickAverage()
+        {
+            Action action = SampleActions.WaitTwoSeconds;
+            var average = action.MeasureAverage(2);
+            Assert.IsTrue(Math.Round(average) <= 2001);
+        }
+
     }
 }
