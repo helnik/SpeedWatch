@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedWatch", "src\SpeedWatc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedWatchTests", "tests\SpeedWatchTests\SpeedWatchTests.csproj", "{2ADDCCD7-50DA-4246-97C7-40ACFC23E2CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsole", "tests\TestConsole\TestConsole.csproj", "{F4FFB789-0FAB-4947-90A5-C5CF607E4E7F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{2ADDCCD7-50DA-4246-97C7-40ACFC23E2CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2ADDCCD7-50DA-4246-97C7-40ACFC23E2CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2ADDCCD7-50DA-4246-97C7-40ACFC23E2CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4FFB789-0FAB-4947-90A5-C5CF607E4E7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4FFB789-0FAB-4947-90A5-C5CF607E4E7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4FFB789-0FAB-4947-90A5-C5CF607E4E7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4FFB789-0FAB-4947-90A5-C5CF607E4E7F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +38,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{328F9F48-8750-4510-AF06-68F1965328CB} = {4D9396AD-0581-423F-8379-79D503A7933D}
 		{2ADDCCD7-50DA-4246-97C7-40ACFC23E2CC} = {7838E621-D615-4B0C-9289-D48B0E197B59}
+		{F4FFB789-0FAB-4947-90A5-C5CF607E4E7F} = {7838E621-D615-4B0C-9289-D48B0E197B59}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7832B6B2-FA2F-4600-8EAF-B194DD91F9B0}
